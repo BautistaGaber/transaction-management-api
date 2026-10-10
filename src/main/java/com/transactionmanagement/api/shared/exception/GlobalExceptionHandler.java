@@ -1,5 +1,6 @@
 package com.transactionmanagement.api.shared.exception;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -65,6 +66,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HandlerMethodValidationException.class)
     public ResponseEntity<Map<String, String>> handleMethodValidation(HandlerMethodValidationException ex) {
+        return error(HttpStatus.BAD_REQUEST, "Invalid request parameters");
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> handleConstraintViolation(ConstraintViolationException ex) {
         return error(HttpStatus.BAD_REQUEST, "Invalid request parameters");
     }
 }
