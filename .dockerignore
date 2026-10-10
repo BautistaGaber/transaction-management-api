@@ -1,0 +1,10 @@
+.git
+.idea
+target
+*.iml
+*.log
+.env
+.env.*
+http
+scripts
+README.md

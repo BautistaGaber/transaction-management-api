@@ -1,0 +1,10 @@
+services:
+  transaction-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: transaction-management-api:local
+    container_name: transaction-management-api
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
