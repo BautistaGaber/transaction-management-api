@@ -1,0 +1,40 @@
+### transaction management - Official Examples
+### Execute requests in order: 10, 11, 12, then GETs
+
+### 1. Create transaction 10
+PUT http://localhost:8080/transactions/10
+Content-Type: application/json
+
+{
+  "amount": 5000,
+  "type": "cars"
+}
+
+### 2. Create transaction 11
+PUT http://localhost:8080/transactions/11
+Content-Type: application/json
+
+{
+  "amount": 10000,
+  "type": "shopping",
+  "parent_id": 10
+}
+
+### 3. Create transaction 12
+PUT http://localhost:8080/transactions/12
+Content-Type: application/json
+
+{
+  "amount": 5000,
+  "type": "shopping",
+  "parent_id": 11
+}
+
+### 4. Find transactions by type
+GET http://localhost:8080/transactions/types/cars
+
+### 5. Sum transaction 10
+GET http://localhost:8080/transactions/sum/10
+
+### 6. Sum transaction 11
+GET http://localhost:8080/transactions/sum/11

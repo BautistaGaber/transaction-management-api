@@ -1,0 +1,160 @@
+### ADDITIONAL TRANSACTION SCENARIOS
+### Run requests in the indicated order.
+
+### SCENARIO A - MULTIPLE BRANCHES
+
+### A1. Create root
+PUT http://localhost:8080/transactions/100
+Content-Type: application/json
+
+{
+  "amount": 1000,
+  "type": "travel"
+}
+
+### A2. Create first child
+PUT http://localhost:8080/transactions/101
+Content-Type: application/json
+
+{
+  "amount": 500,
+  "type": "hotel",
+  "parent_id": 100
+}
+
+### A3. Create second child
+PUT http://localhost:8080/transactions/102
+Content-Type: application/json
+
+{
+  "amount": 300,
+  "type": "food",
+  "parent_id": 100
+}
+
+### A4. Create grandchild
+PUT http://localhost:8080/transactions/103
+Content-Type: application/json
+
+{
+  "amount": 200,
+  "type": "transport",
+  "parent_id": 101
+}
+
+### A5. Expected sum: 2000
+GET http://localhost:8080/transactions/sum/100
+
+### A6. Expected sum: 700
+GET http://localhost:8080/transactions/sum/101
+
+### A7. Expected result: [101]
+GET http://localhost:8080/transactions/types/hotel
+
+
+### SCENARIO B - UPDATE TRANSACTION
+
+### B1. Create transaction
+PUT http://localhost:8080/transactions/200
+Content-Type: application/json
+
+{
+  "amount": 500,
+  "type": "office"
+}
+
+### B2. Expected sum: 500
+GET http://localhost:8080/transactions/sum/200
+
+### B3. Update same transaction
+PUT http://localhost:8080/transactions/200
+Content-Type: application/json
+
+{
+  "amount": 900,
+  "type": "office"
+}
+
+### B4. Expected sum: 900
+GET http://localhost:8080/transactions/sum/200
+
+
+### SCENARIO C - CIRCULAR RELATIONSHIP
+
+### C1. Create root
+PUT http://localhost:8080/transactions/300
+Content-Type: application/json
+
+{
+  "amount": 100,
+  "type": "equipment"
+}
+
+### C2. Create child
+PUT http://localhost:8080/transactions/301
+Content-Type: application/json
+
+{
+  "amount": 200,
+  "type": "equipment",
+  "parent_id": 300
+}
+
+### C3. Create grandchild
+PUT http://localhost:8080/transactions/302
+Content-Type: application/json
+
+{
+  "amount": 300,
+  "type": "equipment",
+  "parent_id": 301
+}
+
+### C4. Expected HTTP 400 - Cycle detected
+PUT http://localhost:8080/transactions/300
+Content-Type: application/json
+
+{
+  "amount": 100,
+  "type": "equipment",
+  "parent_id": 302
+}
+
+### C5. Expected sum: 600
+GET http://localhost:8080/transactions/sum/300
+
+
+### SCENARIO D - INVALID REQUESTS
+
+### D1. Expected HTTP 400 - Parent not found
+PUT http://localhost:8080/transactions/400
+Content-Type: application/json
+
+{
+  "amount": 500,
+  "type": "shopping",
+  "parent_id": 999999
+}
+
+### D2. Expected HTTP 400 - Blank type
+PUT http://localhost:8080/transactions/401
+Content-Type: application/json
+
+{
+  "amount": 100,
+  "type": ""
+}
+
+### D3. Expected HTTP 400 - Missing amount
+PUT http://localhost:8080/transactions/402
+Content-Type: application/json
+
+{
+  "type": "shopping"
+}
+
+### D4. Expected HTTP 404 - Transaction not found
+GET http://localhost:8080/transactions/sum/999999
+
+### D5. Expected empty array
+GET http://localhost:8080/transactions/types/unknown-category
