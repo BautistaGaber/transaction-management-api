@@ -51,5 +51,10 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(status).body(body);
     }
+
+    @ExceptionHandler(TransactionSumOverflowException.class)
+    public ResponseEntity<Map<String, String>> handleSumOverflow(TransactionSumOverflowException ex) {
+        return error(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
+    }
 }
 

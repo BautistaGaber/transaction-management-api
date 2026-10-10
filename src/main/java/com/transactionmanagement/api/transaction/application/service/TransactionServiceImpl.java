@@ -2,6 +2,7 @@
 package com.transactionmanagement.api.transaction.application.service;
 
 import com.transactionmanagement.api.shared.exception.TransactionNotFoundException;
+import com.transactionmanagement.api.shared.exception.TransactionSumOverflowException;
 import com.transactionmanagement.api.transaction.application.validation.TransactionValidator;
 import com.transactionmanagement.api.transaction.domain.model.Transaction;
 import com.transactionmanagement.api.transaction.domain.repository.TransactionRepository;
@@ -87,7 +88,13 @@ public class TransactionServiceImpl implements TransactionService{
                     continue;
                 }
 
-                sum += current.amount();
+                double updatedSum = sum + current.amount();
+
+                if (!Double.isFinite(updatedSum)) {
+                    throw new TransactionSumOverflowException(transactionId);
+                }
+
+                sum = updatedSum;
 
                 for (Transaction child : childrenByParent.getOrDefault(current.id(), List.of())) {
                     pending.push(child);
