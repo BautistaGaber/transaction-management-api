@@ -8,8 +8,7 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI transactionManagementOpenAPI() {
-        return new OpenAPI()
-                .info(new Info()
+        return new OpenAPI().info(new Info()
                         .title("Transaction Management API")
                         .version("1.0.0")
                         .description(
