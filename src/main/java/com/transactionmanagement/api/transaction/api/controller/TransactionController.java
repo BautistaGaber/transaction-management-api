@@ -5,7 +5,7 @@ import com.transactionmanagement.api.transaction.api.dto.TransactionRequest;
 import com.transactionmanagement.api.transaction.api.dto.TransactionStatusResponse;
 import com.transactionmanagement.api.transaction.api.dto.TransactionSumResponse;
 import com.transactionmanagement.api.transaction.api.mapper.TransactionMapper;
-import com.transactionmanagement.api.transaction.application.service.TransactionServiceImpl;
+import com.transactionmanagement.api.transaction.application.service.TransactionService;
 import com.transactionmanagement.api.transaction.domain.model.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,10 +23,10 @@ import java.util.List;
 @RequestMapping("/transactions")
 public class TransactionController {
 
-    private final TransactionServiceImpl service;
+    private final TransactionService service;
     private final TransactionMapper mapper;
 
-    public TransactionController(TransactionServiceImpl service, TransactionMapper mapper) {
+    public TransactionController(TransactionService service, TransactionMapper mapper) {
         this.service = service;
         this.mapper = mapper;
     }
