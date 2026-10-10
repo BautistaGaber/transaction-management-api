@@ -8,11 +8,14 @@ import com.transactionmanagement.api.transaction.api.mapper.TransactionMapper;
 import com.transactionmanagement.api.transaction.application.service.TransactionServiceImpl;
 import com.transactionmanagement.api.transaction.domain.model.Transaction;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {
@@ -26,7 +29,7 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TransactionStatusResponse> save(@PathVariable Long id, @Valid @RequestBody TransactionRequest request) {
+    public ResponseEntity<TransactionStatusResponse> save(@PathVariable @Positive Long id, @Valid @RequestBody TransactionRequest request) {
         Transaction transaction = mapper.toDomain(id, request);
         service.save(transaction);
 
@@ -41,7 +44,7 @@ public class TransactionController {
     }
 
     @GetMapping("/sum/{id}")
-    public ResponseEntity<TransactionSumResponse> calculateSum(@PathVariable Long id) {
+    public ResponseEntity<TransactionSumResponse> calculateSum(@PathVariable @Positive Long id) {
         double sum = service.calculateSum(id);
 
         return ResponseEntity.ok(new TransactionSumResponse(sum)
