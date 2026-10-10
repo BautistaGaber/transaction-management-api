@@ -1,9 +1,13 @@
 package com.transactionmanagement.api.transaction.domain.repository;
 
 import com.transactionmanagement.api.transaction.domain.model.Transaction;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.Optional;
+
 
 public interface TransactionRepository {
 

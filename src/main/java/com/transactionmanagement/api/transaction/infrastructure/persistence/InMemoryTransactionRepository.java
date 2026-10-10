@@ -2,12 +2,14 @@ package com.transactionmanagement.api.transaction.infrastructure.persistence;
 
 import com.transactionmanagement.api.transaction.domain.model.Transaction;
 import com.transactionmanagement.api.transaction.domain.repository.TransactionRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class InMemoryTransactionRepository implements TransactionRepository {
 
     private final ConcurrentHashMap<Long, Transaction> transactions = new ConcurrentHashMap<>();
