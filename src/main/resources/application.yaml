@@ -1,3 +1,7 @@
 spring:
   application:
     name: transaction-management-api
+
+server:
+  port: ${PORT:8080}
+  address: 0.0.0.0
